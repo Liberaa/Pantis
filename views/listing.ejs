@@ -62,6 +62,12 @@
       </div>
 
       <p class="date">Publicerad: <%= listing.createdAt.toLocaleDateString('sv-SE') %></p>
+
+      <% if (currentUser && currentUser.id === listing.userId) { %>
+        <form action="/annons/<%= listing.id %>/slett" method="POST" style="margin-top:1rem" onsubmit="return confirm('Ta bort annonsen?')">
+          <button type="submit" class="btn-delete btn-large">Ta bort annons</button>
+        </form>
+      <% } %>
     </div>
   </div>
 </section>

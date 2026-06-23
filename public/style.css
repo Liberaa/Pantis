@@ -837,6 +837,39 @@ nav a:hover { color: var(--blue); }
 .terms-body p, .terms-body ul { color: var(--muted); line-height: 1.7; }
 .terms-body ul { padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.3rem; }
 
+/* ─── Profile ─── */
+.profile-listings { display: flex; flex-direction: column; gap: 0.75rem; max-width: 700px; }
+
+.profile-listing-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.75rem;
+}
+
+.profile-listing-row .cart-item-info { flex: 1; }
+.profile-listing-row .cart-item-info a { color: var(--text); }
+.profile-listing-row .cart-item-info a:hover { color: var(--blue); }
+
+.btn-delete {
+  background: none;
+  border: 1.5px solid #ef4444;
+  color: #ef4444;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+
+.btn-delete:hover { background: #ef4444; color: #fff; }
+
 /* ─── Empty state ─── */
 .empty-state { text-align: center; padding: 4rem 1rem; color: var(--muted); }
 .empty-state p { font-size: 1.05rem; margin-bottom: 1.5rem; }

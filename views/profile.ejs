@@ -1,0 +1,42 @@
+<%- include('partials/header', { title: 'Min profil' }) %>
+
+<section class="section">
+  <h1>Välkommen, <%= currentUser.name %></h1>
+
+  <h2 style="margin-top:2rem">Dina annonser</h2>
+
+  <% if (listings.length === 0) { %>
+    <div class="empty-state">
+      <p>Du har inga aktiva annonser.</p>
+      <a href="/lämna" class="btn-primary">Lämna burkar</a>
+    </div>
+  <% } else { %>
+    <div class="profile-listings">
+      <% listings.forEach(listing => { %>
+      <div class="profile-listing-row">
+        <div class="cart-item-img">
+          <% if (listing.image) { %>
+            <img src="<%= listing.image %>" alt="burkar">
+          <% } else { %>
+            <div class="cart-img-placeholder">
+              <%- include('partials/can-placeholder') %>
+            </div>
+          <% } %>
+        </div>
+        <div class="cart-item-info">
+          <a href="/annons/<%= listing.id %>"><strong>~<%= listing.antal %> burkar i <%= listing.location %></strong></a>
+          <p class="meta"><%= listing.typ %> · ~<%= listing.pantVarde %> kr · <%= listing.createdAt.toLocaleDateString('sv-SE') %></p>
+          <% if (listing.reserved) { %>
+            <span class="reserved-tag">Reserverad</span>
+          <% } %>
+        </div>
+        <form action="/annons/<%= listing.id %>/slett" method="POST" onsubmit="return confirm('Ta bort annonsen?')">
+          <button type="submit" class="btn-delete">Ta bort</button>
+        </form>
+      </div>
+      <% }) %>
+    </div>
+  <% } %>
+</section>
+
+<%- include('partials/footer') %>

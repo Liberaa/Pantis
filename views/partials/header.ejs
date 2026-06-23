@@ -23,7 +23,7 @@
       <% if (currentUser) { %>
         <a href="/lämna" class="btn-sell">Lämna burkar</a>
         <div class="user-menu">
-          <span class="user-name"><%= currentUser.name %></span>
+          <a href="/profil" class="user-name"><%= currentUser.name %></a>
           <form action="/logout" method="POST" style="display:inline">
             <button type="submit" class="btn-logout">Logga ut</button>
           </form>
