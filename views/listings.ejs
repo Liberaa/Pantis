@@ -1,0 +1,50 @@
+<%- include('partials/header', { title: 'Annonser' }) %>
+
+<section class="section">
+  <h1>Alla byxor</h1>
+
+  <form class="filter-form" method="GET" action="/annonser">
+    <input type="text" name="search" placeholder="Sök..." value="<%= search || '' %>">
+    <select name="size">
+      <option value="">Alla storlekar</option>
+      <% ['XS','S','M','L','XL','XXL','28','29','30','31','32','33','34','36','38','40'].forEach(s => { %>
+        <option value="<%= s %>" <%= size === s ? 'selected' : '' %>><%= s %></option>
+      <% }) %>
+    </select>
+    <select name="condition">
+      <option value="">Alla skick</option>
+      <% ['Nytt', 'Mycket bra', 'Bra', 'Acceptabelt'].forEach(c => { %>
+        <option value="<%= c %>" <%= condition === c ? 'selected' : '' %>><%= c %></option>
+      <% }) %>
+    </select>
+    <button type="submit" class="btn-primary">Filtrera</button>
+  </form>
+
+  <% if (listings.length === 0) { %>
+    <div class="empty-state">
+      <p>Inga annonser hittades.</p>
+      <a href="/sälj" class="btn-primary">Bli först att sälja!</a>
+    </div>
+  <% } else { %>
+    <div class="grid">
+      <% listings.forEach(listing => { %>
+      <a href="/annons/<%= listing.id %>" class="card">
+        <div class="card-img">
+          <% if (listing.image) { %>
+            <img src="<%= listing.image %>" alt="<%= listing.title %>">
+          <% } else { %>
+            <div class="card-img-placeholder">👖</div>
+          <% } %>
+        </div>
+        <div class="card-body">
+          <h3><%= listing.title %></h3>
+          <p class="price"><%= listing.price %> kr</p>
+          <p class="meta"><%= listing.size %> · <%= listing.condition %> · <%= listing.location %></p>
+        </div>
+      </a>
+      <% }) %>
+    </div>
+  <% } %>
+</section>
+
+<%- include('partials/footer') %>

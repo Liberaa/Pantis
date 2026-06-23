@@ -1,0 +1,37 @@
+<%- include('partials/header', { title: listing.title }) %>
+
+<section class="section listing-detail">
+  <a href="/annonser" class="back-link">← Tillbaka</a>
+
+  <div class="listing-layout">
+    <div class="listing-image">
+      <% if (listing.image) { %>
+        <img src="<%= listing.image %>" alt="<%= listing.title %>">
+      <% } else { %>
+        <div class="img-placeholder-large">👖</div>
+      <% } %>
+    </div>
+
+    <div class="listing-info">
+      <h1><%= listing.title %></h1>
+      <p class="price-large"><%= listing.price %> kr</p>
+
+      <div class="tags">
+        <span class="tag"><%= listing.size %></span>
+        <span class="tag"><%= listing.condition %></span>
+        <span class="tag"><%= listing.location %></span>
+      </div>
+
+      <p class="description"><%= listing.description %></p>
+
+      <div class="contact-box">
+        <h3>Kontakta säljaren</h3>
+        <p><%= listing.contact %></p>
+      </div>
+
+      <p class="date">Publicerad: <%= listing.createdAt.toLocaleDateString('sv-SE') %></p>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
