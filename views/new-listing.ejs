@@ -14,10 +14,17 @@
       <textarea id="description" name="description" rows="4" placeholder="Beskriv byxorna, material, detaljer..." required></textarea>
     </div>
 
-    <div class="form-row">
+    <div class="free-toggle">
+      <label class="toggle-label">
+        <input type="checkbox" name="free" id="free" onchange="togglePrice(this)">
+        <span class="toggle-text">Ge bort gratis</span>
+      </label>
+    </div>
+
+    <div class="form-row" id="price-row">
       <div class="form-group">
         <label for="price">Pris (kr) *</label>
-        <input type="number" id="price" name="price" min="0" placeholder="250" required>
+        <input type="number" id="price" name="price" min="1" placeholder="250">
       </div>
 
       <div class="form-group">
@@ -41,12 +48,32 @@
       </div>
     </div>
 
+    <div class="form-row" id="size-row-free" style="display:none">
+      <div class="form-group">
+        <label for="size2">Storlek *</label>
+        <select id="size2" name="size">
+          <option value="">Välj storlek</option>
+          <% ['XS','S','M','L','XL','XXL','28','29','30','31','32','33','34','36','38','40'].forEach(s => { %>
+            <option value="<%= s %>"><%= s %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="condition2">Skick *</label>
+        <select id="condition2" name="condition">
+          <option value="">Välj skick</option>
+          <% ['Nytt', 'Mycket bra', 'Bra', 'Acceptabelt'].forEach(c => { %>
+            <option value="<%= c %>"><%= c %></option>
+          <% }) %>
+        </select>
+      </div>
+    </div>
+
     <div class="form-row">
       <div class="form-group">
         <label for="location">Ort *</label>
         <input type="text" id="location" name="location" placeholder="T.ex. Stockholm" required>
       </div>
-
       <div class="form-group">
         <label for="contact">Kontakt (e-post eller telefon) *</label>
         <input type="text" id="contact" name="contact" placeholder="din@email.se" required>
@@ -58,8 +85,27 @@
       <input type="file" id="image" name="image" accept="image/*">
     </div>
 
+    <p class="form-terms">Genom att publicera godkänner du våra <a href="/villkor" target="_blank">användarvillkor</a>.</p>
+
     <button type="submit" class="btn-primary btn-large">Publicera annons</button>
   </form>
 </section>
+
+<script>
+function togglePrice(cb) {
+  const priceRow = document.getElementById('price-row')
+  const freeRow = document.getElementById('size-row-free')
+  const priceInput = document.getElementById('price')
+  if (cb.checked) {
+    priceRow.style.display = 'none'
+    freeRow.style.display = 'flex'
+    priceInput.required = false
+  } else {
+    priceRow.style.display = 'flex'
+    freeRow.style.display = 'none'
+    priceInput.required = true
+  }
+}
+</script>
 
 <%- include('partials/footer') %>

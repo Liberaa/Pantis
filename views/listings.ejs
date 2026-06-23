@@ -1,10 +1,10 @@
-<%- include('partials/header', { title: 'Annonser' }) %>
+<%- include('partials/header', { title: 'Flöde' }) %>
 
 <section class="section">
-  <h1>Alla byxor</h1>
+  <h1>Flöde</h1>
 
   <form class="filter-form" method="GET" action="/annonser">
-    <input type="text" name="search" placeholder="Sök..." value="<%= search || '' %>">
+    <input type="text" name="search" placeholder="Sök byxor..." value="<%= search || '' %>">
     <select name="size">
       <option value="">Alla storlekar</option>
       <% ['XS','S','M','L','XL','XXL','28','29','30','31','32','33','34','36','38','40'].forEach(s => { %>
@@ -17,6 +17,11 @@
         <option value="<%= c %>" <%= condition === c ? 'selected' : '' %>><%= c %></option>
       <% }) %>
     </select>
+    <select name="priceType">
+      <option value="">Köp & gratis</option>
+      <option value="free" <%= priceType === 'free' ? 'selected' : '' %>>Bara gratis</option>
+      <option value="paid" <%= priceType === 'paid' ? 'selected' : '' %>>Bara till salu</option>
+    </select>
     <button type="submit" class="btn-primary">Filtrera</button>
   </form>
 
@@ -26,20 +31,24 @@
       <a href="/sälj" class="btn-primary">Bli först att sälja!</a>
     </div>
   <% } else { %>
-    <div class="grid">
+    <div class="insta-grid">
       <% listings.forEach(listing => { %>
-      <a href="/annons/<%= listing.id %>" class="card">
-        <div class="card-img">
+      <a href="/annons/<%= listing.id %>" class="insta-card">
+        <div class="insta-img">
           <% if (listing.image) { %>
             <img src="<%= listing.image %>" alt="<%= listing.title %>">
           <% } else { %>
-            <div class="card-img-placeholder">👖</div>
+            <div class="insta-placeholder">👖</div>
+          <% } %>
+          <% if (listing.free) { %>
+            <span class="badge badge-free">GRATIS</span>
+          <% } else { %>
+            <span class="badge badge-price"><%= listing.price %> kr</span>
           <% } %>
         </div>
-        <div class="card-body">
-          <h3><%= listing.title %></h3>
-          <p class="price"><%= listing.price %> kr</p>
-          <p class="meta"><%= listing.size %> · <%= listing.condition %> · <%= listing.location %></p>
+        <div class="insta-hover">
+          <p class="insta-title"><%= listing.title %></p>
+          <p class="insta-meta"><%= listing.size %> · <%= listing.condition %> · <%= listing.location %></p>
         </div>
       </a>
       <% }) %>

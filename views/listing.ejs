@@ -1,7 +1,7 @@
 <%- include('partials/header', { title: listing.title }) %>
 
 <section class="section listing-detail">
-  <a href="/annonser" class="back-link">← Tillbaka</a>
+  <a href="/annonser" class="back-link">← Tillbaka till flödet</a>
 
   <div class="listing-layout">
     <div class="listing-image">
@@ -13,8 +13,17 @@
     </div>
 
     <div class="listing-info">
+      <% if (listing.free) { %>
+        <div class="free-banner">Dessa byxor ges bort gratis!</div>
+      <% } %>
+
       <h1><%= listing.title %></h1>
-      <p class="price-large"><%= listing.price %> kr</p>
+
+      <% if (listing.free) { %>
+        <p class="price-large free-price">GRATIS</p>
+      <% } else { %>
+        <p class="price-large"><%= listing.price %> kr</p>
+      <% } %>
 
       <div class="tags">
         <span class="tag"><%= listing.size %></span>

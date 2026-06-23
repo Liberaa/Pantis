@@ -25,14 +25,16 @@ app.get('/', (req, res) => {
 })
 
 app.get('/annonser', (req, res) => {
-  const { search, size, condition } = req.query
+  const { search, size, condition, priceType } = req.query
   let results = [...listings]
 
   if (search) results = results.filter(l => l.title.toLowerCase().includes(search.toLowerCase()) || l.description.toLowerCase().includes(search.toLowerCase()))
   if (size) results = results.filter(l => l.size === size)
   if (condition) results = results.filter(l => l.condition === condition)
+  if (priceType === 'free') results = results.filter(l => l.free)
+  if (priceType === 'paid') results = results.filter(l => !l.free)
 
-  res.render('listings', { listings: results.reverse(), search, size, condition })
+  res.render('listings', { listings: results.reverse(), search, size, condition, priceType })
 })
 
 app.get('/annons/:id', (req, res) => {
@@ -46,12 +48,13 @@ app.get('/sälj', (req, res) => {
 })
 
 app.post('/sälj', upload.single('image'), (req, res) => {
-  const { title, description, price, size, condition, location, contact } = req.body
+  const { title, description, price, free, size, condition, location, contact } = req.body
   const listing = {
     id: uuidv4(),
     title,
     description,
-    price: parseInt(price),
+    price: free === 'on' ? 0 : parseInt(price) || 0,
+    free: free === 'on',
     size,
     condition,
     location,
@@ -61,6 +64,14 @@ app.post('/sälj', upload.single('image'), (req, res) => {
   }
   listings.push(listing)
   res.redirect(`/annons/${listing.id}`)
+})
+
+app.get('/hur-fungerar-det', (req, res) => {
+  res.render('how-to-use')
+})
+
+app.get('/villkor', (req, res) => {
+  res.render('terms')
 })
 
 app.listen(PORT, () => {
