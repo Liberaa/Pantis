@@ -1,4 +1,4 @@
-<%- include('partials/header', { title: listing.title }) %>
+<%- include('partials/header', { title: listing.antal + ' burkar i ' + listing.location }) %>
 
 <section class="section listing-detail">
   <a href="/annonser" class="back-link">← Tillbaka till flödet</a>
@@ -6,35 +6,34 @@
   <div class="listing-layout">
     <div class="listing-image">
       <% if (listing.image) { %>
-        <img src="<%= listing.image %>" alt="<%= listing.title %>">
+        <img src="<%= listing.image %>" alt="Pantburkar i <%= listing.location %>">
       <% } else { %>
-        <div class="img-placeholder-large">👖</div>
+        <div class="img-placeholder-large">🥫</div>
       <% } %>
     </div>
 
     <div class="listing-info">
-      <% if (listing.free) { %>
-        <div class="free-banner">Dessa byxor ges bort gratis!</div>
-      <% } %>
+      <div class="free-banner">Gratis att hämta – du behåller panten!</div>
 
-      <h1><%= listing.title %></h1>
+      <h1>~<%= listing.antal %> burkar i <%= listing.location %></h1>
 
-      <% if (listing.free) { %>
-        <p class="price-large free-price">GRATIS</p>
-      <% } else { %>
-        <p class="price-large"><%= listing.price %> kr</p>
-      <% } %>
+      <div class="pant-value-box">
+        <span class="pant-label">Uppskattad pantvärd</span>
+        <span class="pant-amount">~<%= listing.pantVarde %> kr</span>
+      </div>
 
       <div class="tags">
-        <span class="tag"><%= listing.size %></span>
-        <span class="tag"><%= listing.condition %></span>
+        <span class="tag"><%= listing.typ %></span>
+        <span class="tag"><%= listing.antal %> st</span>
         <span class="tag"><%= listing.location %></span>
       </div>
 
-      <p class="description"><%= listing.description %></p>
+      <% if (listing.description) { %>
+        <p class="description"><%= listing.description %></p>
+      <% } %>
 
       <div class="contact-box">
-        <h3>Kontakta säljaren</h3>
+        <h3>Kontakta för upphämtning</h3>
         <p><%= listing.contact %></p>
       </div>
 

@@ -367,7 +367,37 @@ nav a:hover {
   color: var(--muted);
 }
 
+/* ─── Pant value box ─── */
+.pant-value-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  border-radius: 10px;
+  padding: 0.9rem 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.pant-label {
+  font-size: 0.9rem;
+  color: #166534;
+  font-weight: 600;
+}
+
+.pant-amount {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #16a34a;
+}
+
 /* ─── New listing form ─── */
+.form-subtitle {
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
 .listing-form {
   max-width: 680px;
   background: var(--white);
@@ -570,6 +600,148 @@ nav a:hover {
   height: 1.1rem;
   accent-color: #16a34a;
   cursor: pointer;
+}
+
+/* Photo upload area */
+.photo-upload {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.2s;
+  background: var(--bg);
+}
+
+.photo-upload:hover {
+  border-color: var(--blue);
+}
+
+.photo-upload img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+}
+
+#upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--muted);
+}
+
+.upload-icon {
+  font-size: 2.5rem;
+}
+
+/* Antal picker */
+.antal-picker {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.antal-picker button {
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.3rem;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.antal-picker button:first-child {
+  border-radius: 8px 0 0 8px;
+}
+
+.antal-picker button:last-child {
+  border-radius: 0 8px 8px 0;
+}
+
+.antal-picker button:hover {
+  background: #1347b8;
+}
+
+.antal-picker input {
+  width: 5rem;
+  text-align: center;
+  border-radius: 0 !important;
+  border-left: none !important;
+  border-right: none !important;
+  height: 2.5rem;
+}
+
+.field-hint {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 0.25rem;
+}
+
+.optional {
+  font-weight: 400;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* Typ grid */
+.typ-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.typ-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.typ-option:hover {
+  border-color: var(--blue);
+  background: var(--blue-light);
+}
+
+.typ-option input[type="radio"] {
+  accent-color: var(--blue);
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+}
+
+.typ-option input[type="radio"]:checked + span {
+  color: var(--blue);
+}
+
+.typ-option:has(input:checked) {
+  border-color: var(--blue);
+  background: var(--blue-light);
+}
+
+.typ-option span {
+  display: flex;
+  flex-direction: column;
+}
+
+.typ-option strong {
+  font-size: 1rem;
+}
+
+.typ-option small {
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.3;
 }
 
 .form-terms {

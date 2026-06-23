@@ -1,34 +1,24 @@
 <%- include('partials/header', { title: 'Flöde' }) %>
 
 <section class="section">
-  <h1>Flöde</h1>
+  <h1>Burkar nära dig</h1>
 
   <form class="filter-form" method="GET" action="/annonser">
-    <input type="text" name="search" placeholder="Sök byxor..." value="<%= search || '' %>">
-    <select name="size">
-      <option value="">Alla storlekar</option>
-      <% ['XS','S','M','L','XL','XXL','28','29','30','31','32','33','34','36','38','40'].forEach(s => { %>
-        <option value="<%= s %>" <%= size === s ? 'selected' : '' %>><%= s %></option>
-      <% }) %>
-    </select>
-    <select name="condition">
-      <option value="">Alla skick</option>
-      <% ['Nytt', 'Mycket bra', 'Bra', 'Acceptabelt'].forEach(c => { %>
-        <option value="<%= c %>" <%= condition === c ? 'selected' : '' %>><%= c %></option>
-      <% }) %>
-    </select>
-    <select name="priceType">
-      <option value="">Köp & gratis</option>
-      <option value="free" <%= priceType === 'free' ? 'selected' : '' %>>Bara gratis</option>
-      <option value="paid" <%= priceType === 'paid' ? 'selected' : '' %>>Bara till salu</option>
+    <input type="text" name="search" placeholder="Sök ort eller stad..." value="<%= search || '' %>">
+    <select name="typ">
+      <option value="">Alla typer</option>
+      <option value="1kr" <%= typ === '1kr' ? 'selected' : '' %>>1 kr – Liten burk/flaska</option>
+      <option value="2kr" <%= typ === '2kr' ? 'selected' : '' %>>2 kr – Stor burk/flaska</option>
+      <option value="3kr" <%= typ === '3kr' ? 'selected' : '' %>>3 kr – Glasflaska</option>
+      <option value="blandat" <%= typ === 'blandat' ? 'selected' : '' %>>Blandat</option>
     </select>
     <button type="submit" class="btn-primary">Filtrera</button>
   </form>
 
   <% if (listings.length === 0) { %>
     <div class="empty-state">
-      <p>Inga annonser hittades.</p>
-      <a href="/sälj" class="btn-primary">Bli först att sälja!</a>
+      <p>Inga burkar hittades.</p>
+      <a href="/lämna" class="btn-primary">Lämna dina burkar</a>
     </div>
   <% } else { %>
     <div class="insta-grid">
@@ -36,19 +26,15 @@
       <a href="/annons/<%= listing.id %>" class="insta-card">
         <div class="insta-img">
           <% if (listing.image) { %>
-            <img src="<%= listing.image %>" alt="<%= listing.title %>">
+            <img src="<%= listing.image %>" alt="Pantburkar i <%= listing.location %>">
           <% } else { %>
-            <div class="insta-placeholder">👖</div>
+            <div class="insta-placeholder">🥫</div>
           <% } %>
-          <% if (listing.free) { %>
-            <span class="badge badge-free">GRATIS</span>
-          <% } else { %>
-            <span class="badge badge-price"><%= listing.price %> kr</span>
-          <% } %>
+          <span class="badge badge-free"><%= listing.antal %> st · ~<%= listing.pantVarde %> kr</span>
         </div>
         <div class="insta-hover">
-          <p class="insta-title"><%= listing.title %></p>
-          <p class="insta-meta"><%= listing.size %> · <%= listing.condition %> · <%= listing.location %></p>
+          <p class="insta-title"><%= listing.antal %> st – <%= listing.typ %></p>
+          <p class="insta-meta"><%= listing.location %></p>
         </div>
       </a>
       <% }) %>

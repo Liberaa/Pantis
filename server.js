@@ -6,6 +6,8 @@ const { v4: uuidv4 } = require('uuid')
 const app = express()
 const PORT = 3000
 
+const PANT_VALUES = { '1kr': 1, '2kr': 2, '3kr': 3, blandat: 1.5 }
+
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 app.use(express.static(path.join(__dirname, 'public')))
@@ -21,20 +23,20 @@ const upload = multer({ storage })
 const listings = []
 
 app.get('/', (req, res) => {
-  res.render('index', { listings: listings.slice(-6).reverse() })
+  res.render('index', { listings: listings.slice(-9).reverse() })
 })
 
 app.get('/annonser', (req, res) => {
-  const { search, size, condition, priceType } = req.query
+  const { search, typ } = req.query
   let results = [...listings]
 
-  if (search) results = results.filter(l => l.title.toLowerCase().includes(search.toLowerCase()) || l.description.toLowerCase().includes(search.toLowerCase()))
-  if (size) results = results.filter(l => l.size === size)
-  if (condition) results = results.filter(l => l.condition === condition)
-  if (priceType === 'free') results = results.filter(l => l.free)
-  if (priceType === 'paid') results = results.filter(l => !l.free)
+  if (search) results = results.filter(l =>
+    l.description.toLowerCase().includes(search.toLowerCase()) ||
+    l.location.toLowerCase().includes(search.toLowerCase())
+  )
+  if (typ) results = results.filter(l => l.typ === typ)
 
-  res.render('listings', { listings: results.reverse(), search, size, condition, priceType })
+  res.render('listings', { listings: results.reverse(), search, typ })
 })
 
 app.get('/annons/:id', (req, res) => {
@@ -43,20 +45,20 @@ app.get('/annons/:id', (req, res) => {
   res.render('listing', { listing })
 })
 
-app.get('/sälj', (req, res) => {
+app.get('/lämna', (req, res) => {
   res.render('new-listing')
 })
 
-app.post('/sälj', upload.single('image'), (req, res) => {
-  const { title, description, price, free, size, condition, location, contact } = req.body
+app.post('/lämna', upload.single('image'), (req, res) => {
+  const { antal, typ, description, location, contact } = req.body
+  const antalNum = parseInt(antal) || 1
+  const pantVarde = Math.round(antalNum * (PANT_VALUES[typ] || 1))
   const listing = {
     id: uuidv4(),
-    title,
+    antal: antalNum,
+    typ,
     description,
-    price: free === 'on' ? 0 : parseInt(price) || 0,
-    free: free === 'on',
-    size,
-    condition,
+    pantVarde,
     location,
     contact,
     image: req.file ? `/uploads/${req.file.filename}` : null,

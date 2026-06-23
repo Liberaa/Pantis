@@ -1,45 +1,41 @@
 <%- include('partials/header', { title: 'Hem' }) %>
 
 <section class="hero">
-  <h1>Köp & sälj byxor i Sverige</h1>
-  <p>Hitta ett fynd eller ge dina byxor nytt liv.</p>
+  <h1>Gratis pantburkar nära dig</h1>
+  <p>Någon ställer ut sina burkar — du hämtar dem och får panten. Enkelt.</p>
   <div class="hero-actions">
-    <a href="/annonser" class="btn-primary">Se flödet</a>
-    <a href="/sälj" class="btn-secondary">Lägg upp annons</a>
+    <a href="/annonser" class="btn-primary">Hitta burkar</a>
+    <a href="/lämna" class="btn-secondary">Lämna dina burkar</a>
   </div>
 </section>
 
 <% if (listings.length > 0) { %>
 <section class="section">
-  <h2>Senaste byxorna</h2>
+  <h2>Senast utlagda</h2>
   <div class="insta-grid">
     <% listings.forEach(listing => { %>
     <a href="/annons/<%= listing.id %>" class="insta-card">
       <div class="insta-img">
         <% if (listing.image) { %>
-          <img src="<%= listing.image %>" alt="<%= listing.title %>">
+          <img src="<%= listing.image %>" alt="Pantburkar i <%= listing.location %>">
         <% } else { %>
-          <div class="insta-placeholder">👖</div>
+          <div class="insta-placeholder">🥫</div>
         <% } %>
-        <% if (listing.free) { %>
-          <span class="badge badge-free">GRATIS</span>
-        <% } else { %>
-          <span class="badge badge-price"><%= listing.price %> kr</span>
-        <% } %>
+        <span class="badge badge-free"><%= listing.antal %> st · <%= listing.pantVarde %> kr</span>
       </div>
       <div class="insta-hover">
-        <p class="insta-title"><%= listing.title %></p>
-        <p class="insta-meta"><%= listing.size %> · <%= listing.location %></p>
+        <p class="insta-title"><%= listing.antal %> <%= listing.typ %> burkar</p>
+        <p class="insta-meta"><%= listing.location %></p>
       </div>
     </a>
     <% }) %>
   </div>
-  <div class="center"><a href="/annonser" class="btn-outline">Visa alla annonser</a></div>
+  <div class="center"><a href="/annonser" class="btn-outline">Visa alla</a></div>
 </section>
 <% } else { %>
 <section class="section empty-state">
-  <p>Inga annonser ännu — bli den första!</p>
-  <a href="/sälj" class="btn-primary">Lägg upp byxor</a>
+  <p>Inga burkar utlagda än — bli den första!</p>
+  <a href="/lämna" class="btn-primary">Lämna dina burkar</a>
 </section>
 <% } %>
 
