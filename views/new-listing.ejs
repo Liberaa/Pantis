@@ -2,16 +2,19 @@
 
 <section class="section">
   <h1>Lämna dina burkar</h1>
-  <p class="form-subtitle">Ta en snabb bild, säg ungefär hur många och var — klart!</p>
+  <p class="form-subtitle">Ta en snabb bild, säg ungefär hur många och var. Klart.</p>
 
   <form class="listing-form" action="/lämna" method="POST" enctype="multipart/form-data">
 
     <div class="form-group">
-      <label for="image">Foto på burkarna</label>
+      <label>Foto på burkarna</label>
       <div class="photo-upload" id="photo-area" onclick="document.getElementById('image').click()">
         <img id="preview" src="" alt="" style="display:none">
         <div id="upload-placeholder">
-          <span class="upload-icon">📷</span>
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
           <span>Klicka för att ta eller välja foto</span>
         </div>
       </div>
@@ -30,7 +33,7 @@
       </div>
 
       <div class="form-group">
-        <label for="typ">Typ av burkar/flaskor</label>
+        <label>Typ av burkar / flaskor</label>
         <div class="typ-grid">
           <label class="typ-option">
             <input type="radio" name="typ" value="1kr" required>
@@ -43,7 +46,7 @@
             <input type="radio" name="typ" value="2kr">
             <span>
               <strong>2 kr</strong>
-              <small>Stor plastflaska (≥1 liter)</small>
+              <small>Stor plastflaska (1 liter+)</small>
             </span>
           </label>
           <label class="typ-option">
@@ -66,23 +69,23 @@
 
     <div class="form-row">
       <div class="form-group">
-        <label for="location">Var står burkarna?</label>
+        <label for="location">Var står burkarna? *</label>
         <input type="text" id="location" name="location" placeholder="T.ex. Södermalm, Stockholm" required>
       </div>
       <div class="form-group">
-        <label for="contact">Kontakt (så hämtaren kan höra av sig)</label>
+        <label for="contact">Kontakt *</label>
         <input type="text" id="contact" name="contact" placeholder="Telefon eller e-post" required>
       </div>
     </div>
 
     <div class="form-group">
       <label for="description">Övrig info <span class="optional">(valfritt)</span></label>
-      <input type="text" id="description" name="description" placeholder="T.ex. Står vid ytterdörren, ring på om ingen svarar">
+      <input type="text" id="description" name="description" placeholder="T.ex. Står vid ytterdörren i en blå påse">
     </div>
 
     <p class="form-terms">Genom att publicera godkänner du våra <a href="/villkor" target="_blank">användarvillkor</a>.</p>
 
-    <button type="submit" class="btn-primary btn-large">Publicera</button>
+    <button type="submit" class="btn-primary btn-large">Publicera annons</button>
   </form>
 </section>
 

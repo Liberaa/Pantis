@@ -5,7 +5,7 @@
 
   <div id="cart-empty" style="display:none">
     <div class="empty-state">
-      <p>Du har inga burkar i din hämtlista.</p>
+      <p>Din hämtlista är tom.</p>
       <a href="/annonser" class="btn-primary">Hitta burkar</a>
     </div>
   </div>
@@ -16,7 +16,6 @@
 
   <div id="cart-content" style="display:none">
     <div id="cart-items" class="cart-list"></div>
-
     <div class="cart-summary" id="cart-summary">
       <div class="summary-row">
         <span>Antal annonser</span>
@@ -27,7 +26,7 @@
         <span id="summary-value">0 kr</span>
       </div>
       <a href="/kassa" class="btn-primary btn-large" style="display:block;text-align:center;margin-top:1.25rem">
-        Gå till kassan →
+        Gå till kassan
       </a>
     </div>
   </div>
@@ -61,27 +60,35 @@ async function loadCart() {
 
   listings.forEach(l => {
     totalVarde += l.pantVarde
-    container.innerHTML += `
-      <div class="cart-item" id="item-${l.id}">
-        <div class="cart-item-img">
-          ${l.image
-            ? `<img src="${l.image}" alt="burkar">`
-            : '<div class="cart-img-placeholder">🥫</div>'}
-        </div>
-        <div class="cart-item-info">
-          <h3>~${l.antal} burkar i ${l.location}</h3>
-          <p class="meta">${l.typ} · ~${l.pantVarde} kr pantvärd</p>
-          ${l.reserved ? '<span class="reserved-tag">Redan reserverad</span>' : ''}
-        </div>
-        <button class="cart-remove" onclick="removeFromCart('${l.id}'); document.getElementById('item-${l.id}').remove(); location.reload()">
-          ✕
-        </button>
+    const item = document.createElement('div')
+    item.className = 'cart-item'
+    item.id = 'item-' + l.id
+    item.innerHTML = `
+      <div class="cart-item-img">
+        ${l.image ? `<img src="${l.image}" alt="">` : '<div class="cart-img-placeholder"><svg viewBox="0 0 48 72" fill="none"><ellipse cx="24" cy="11" rx="16" ry="5" fill="#bfdbfe" stroke="#93c5fd" stroke-width="1.5"/><rect x="8" y="11" width="32" height="50" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/><ellipse cx="24" cy="61" rx="16" ry="5" fill="#bfdbfe" stroke="#93c5fd" stroke-width="1.5"/></svg></div>'}
       </div>
+      <div class="cart-item-info">
+        <h3>~${l.antal} burkar i ${l.location}</h3>
+        <p class="meta">${l.typ} &middot; ~${l.pantVarde} kr pantvärd</p>
+        ${l.reserved ? '<span class="reserved-tag">Redan reserverad</span>' : ''}
+      </div>
+      <button class="cart-remove" aria-label="Ta bort" onclick="removeItem('${l.id}')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
     `
+    container.appendChild(item)
   })
 
   document.getElementById('summary-count').textContent = listings.length
   document.getElementById('summary-value').textContent = '~' + totalVarde + ' kr'
+}
+
+function removeItem(id) {
+  removeFromCart(id)
+  const el = document.getElementById('item-' + id)
+  if (el) el.remove()
+  updateCartCount()
+  if (getCart().length === 0) location.reload()
 }
 
 loadCart()

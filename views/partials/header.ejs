@@ -9,15 +9,18 @@
 <body>
 <header>
   <div class="header-inner">
-    <a href="/" class="logo">Pantis 🥫</a>
+    <a href="/" class="logo">Pantis</a>
     <nav>
       <a href="/annonser">Flöde</a>
       <a href="/hur-fungerar-det">Hur funkar det?</a>
-      <a href="/varukorg" class="cart-link">
-        <span class="cart-icon">🛒</span>
+      <a href="/varukorg" class="cart-link" aria-label="Hämtlista">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/>
+          <path d="M2.05 2.05h2l2.66 12.42a2 2 0 002 1.58h9.78a2 2 0 001.95-1.57l1.65-7.43H5.12"/>
+        </svg>
         <span class="cart-count" id="cart-count" style="display:none">0</span>
       </a>
-      <a href="/lämna" class="btn-sell">+ Lämna burkar</a>
+      <a href="/lämna" class="btn-sell">Lämna burkar</a>
     </nav>
   </div>
 </header>

@@ -2,7 +2,6 @@
 
 <section class="section">
   <h1>Bekräfta upphämtning</h1>
-  <p class="form-subtitle">Fyll i dina uppgifter så att säljarna vet vem som kommer.</p>
 
   <div id="checkout-empty" style="display:none">
     <div class="empty-state">
@@ -17,7 +16,8 @@
       <form class="listing-form" id="checkout-form" action="/kassa" method="POST">
         <div id="hidden-ids"></div>
 
-        <h2 style="font-size:1.2rem">Dina uppgifter</h2>
+        <h2 style="font-size:1.15rem;margin-bottom:0.25rem">Dina uppgifter</h2>
+        <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1rem">Så att säljarna vet vem som kommer.</p>
 
         <div class="form-group">
           <label for="name">Ditt namn *</label>
@@ -33,7 +33,7 @@
       </form>
 
       <div class="checkout-summary">
-        <h2 style="font-size:1.2rem;margin-bottom:1rem">Din hämtlista</h2>
+        <h2 style="font-size:1.15rem;margin-bottom:1rem">Din hämtlista</h2>
         <div id="checkout-items"></div>
         <div class="summary-row summary-total" style="margin-top:1rem">
           <span>Uppskattad pantvärd</span>
@@ -65,24 +65,29 @@ async function loadCheckout() {
 
   const hiddenIds = document.getElementById('hidden-ids')
   listings.forEach(l => {
-    hiddenIds.innerHTML += `<input type="hidden" name="ids" value="${l.id}">`
+    const inp = document.createElement('input')
+    inp.type = 'hidden'
+    inp.name = 'ids'
+    inp.value = l.id
+    hiddenIds.appendChild(inp)
   })
 
   const container = document.getElementById('checkout-items')
   let total = 0
   listings.forEach(l => {
     total += l.pantVarde
-    container.innerHTML += `
-      <div class="cart-item">
-        <div class="cart-item-img">
-          ${l.image ? `<img src="${l.image}" alt="">` : '<div class="cart-img-placeholder">🥫</div>'}
-        </div>
-        <div class="cart-item-info">
-          <h3>~${l.antal} burkar i ${l.location}</h3>
-          <p class="meta">${l.typ} · ~${l.pantVarde} kr</p>
-        </div>
+    const item = document.createElement('div')
+    item.className = 'cart-item'
+    item.innerHTML = `
+      <div class="cart-item-img">
+        ${l.image ? `<img src="${l.image}" alt="">` : '<div class="cart-img-placeholder"><svg viewBox="0 0 48 72" fill="none"><ellipse cx="24" cy="11" rx="16" ry="5" fill="#bfdbfe" stroke="#93c5fd" stroke-width="1.5"/><rect x="8" y="11" width="32" height="50" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/><ellipse cx="24" cy="61" rx="16" ry="5" fill="#bfdbfe" stroke="#93c5fd" stroke-width="1.5"/></svg></div>'}
+      </div>
+      <div class="cart-item-info">
+        <h3>~${l.antal} burkar i ${l.location}</h3>
+        <p class="meta">${l.typ} &middot; ~${l.pantVarde} kr</p>
       </div>
     `
+    container.appendChild(item)
   })
   document.getElementById('checkout-total').textContent = '~' + total + ' kr'
 }

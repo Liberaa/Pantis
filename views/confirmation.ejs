@@ -2,9 +2,14 @@
 
 <section class="section">
   <div class="confirmation-box">
-    <div class="confirm-icon">✅</div>
-    <h1>Bokat! Nu är det bara att hämta.</h1>
-    <p>Hej <strong><%= order.name %></strong>! Kontakta säljarna nedan för att stämma av upphämtning.</p>
+    <div class="confirm-icon">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10" fill="#dcfce7" stroke="#16a34a"/>
+        <path d="M8 12l3 3 5-5"/>
+      </svg>
+    </div>
+    <h1>Klart! Dags att hämta.</h1>
+    <p>Hej <strong><%= order.name %></strong>. Kontakta säljarna nedan för att stämma av upphämtning.</p>
 
     <div class="confirm-listings">
       <% order.listings.forEach(listing => { %>
@@ -13,13 +18,19 @@
           <% if (listing.image) { %>
             <img src="<%= listing.image %>" alt="burkar">
           <% } else { %>
-            <div class="cart-img-placeholder">🥫</div>
+            <div class="cart-img-placeholder">
+              <svg viewBox="0 0 48 72" fill="none">
+                <ellipse cx="24" cy="11" rx="16" ry="5" fill="#bfdbfe" stroke="#93c5fd" stroke-width="1.5"/>
+                <rect x="8" y="11" width="32" height="50" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/>
+                <ellipse cx="24" cy="61" rx="16" ry="5" fill="#bfdbfe" stroke="#93c5fd" stroke-width="1.5"/>
+              </svg>
+            </div>
           <% } %>
         </div>
         <div class="confirm-item-info">
           <strong>~<%= listing.antal %> burkar i <%= listing.location %></strong>
-          <p class="meta"><%= listing.typ %> · ~<%= listing.pantVarde %> kr</p>
-          <div class="contact-pill">📞 <%= listing.contact %></div>
+          <p class="meta"><%= listing.typ %> &middot; ~<%= listing.pantVarde %> kr</p>
+          <div class="contact-pill"><%= listing.contact %></div>
         </div>
       </div>
       <% }) %>
@@ -29,12 +40,10 @@
       Totalt uppskattad pantvärd: <strong>~<%= order.listings.reduce((s, l) => s + l.pantVarde, 0) %> kr</strong>
     </div>
 
-    <a href="/annonser" class="btn-outline" onclick="clearCart()">Hitta fler burkar</a>
+    <a href="/annonser" class="btn-outline">Hitta fler burkar</a>
   </div>
 </section>
 
-<script>
-  clearCart()
-</script>
+<script>clearCart()</script>
 
 <%- include('partials/footer') %>

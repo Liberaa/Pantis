@@ -1,14 +1,19 @@
 <%- include('partials/header', { title: listing.antal + ' burkar i ' + listing.location }) %>
 
 <section class="section listing-detail">
-  <a href="/annonser" class="back-link">← Tillbaka till flödet</a>
+  <a href="/annonser" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Tillbaka
+  </a>
 
   <div class="listing-layout">
     <div class="listing-image">
       <% if (listing.image) { %>
         <img src="<%= listing.image %>" alt="Pantburkar i <%= listing.location %>">
       <% } else { %>
-        <div class="img-placeholder-large">🥫</div>
+        <div class="img-placeholder-large">
+          <%- include('partials/can-placeholder') %>
+        </div>
       <% } %>
     </div>
 
@@ -16,7 +21,7 @@
       <% if (listing.reserved) { %>
         <div class="reserved-banner">Dessa burkar är redan reserverade</div>
       <% } else { %>
-        <div class="free-banner">Gratis att hämta – du behåller panten!</div>
+        <div class="free-banner">Gratis att hämta — du behåller panten</div>
       <% } %>
 
       <h1>~<%= listing.antal %> burkar i <%= listing.location %></h1>
@@ -37,19 +42,21 @@
       <% } %>
 
       <% if (!listing.reserved) { %>
-        <button
-          class="btn-primary btn-large btn-add-cart"
-          id="cart-btn"
-          onclick="toggleCart('<%= listing.id %>', this)"
-        >
-          Lägg i hämtlista
-        </button>
-        <a href="/varukorg" class="btn-outline btn-large" style="margin-top:0.75rem;display:block;text-align:center">
-          Visa hämtlista
-        </a>
+        <div class="cart-actions">
+          <button
+            class="btn-primary btn-large btn-add-cart"
+            id="cart-btn"
+            onclick="toggleCart('<%= listing.id %>', this)"
+          >
+            Lägg i hämtlista
+          </button>
+          <a href="/varukorg" class="btn-outline btn-large">
+            Se hämtlista
+          </a>
+        </div>
       <% } %>
 
-      <div class="contact-box" style="margin-top:1.5rem">
+      <div class="contact-box">
         <h3>Kontakta för upphämtning</h3>
         <p><%= listing.contact %></p>
       </div>
