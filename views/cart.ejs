@@ -1,0 +1,90 @@
+<%- include('partials/header', { title: 'Hämtlista' }) %>
+
+<section class="section">
+  <h1>Din hämtlista</h1>
+
+  <div id="cart-empty" style="display:none">
+    <div class="empty-state">
+      <p>Du har inga burkar i din hämtlista.</p>
+      <a href="/annonser" class="btn-primary">Hitta burkar</a>
+    </div>
+  </div>
+
+  <div id="cart-loading">
+    <p style="color:var(--muted)">Laddar...</p>
+  </div>
+
+  <div id="cart-content" style="display:none">
+    <div id="cart-items" class="cart-list"></div>
+
+    <div class="cart-summary" id="cart-summary">
+      <div class="summary-row">
+        <span>Antal annonser</span>
+        <span id="summary-count">0</span>
+      </div>
+      <div class="summary-row summary-total">
+        <span>Uppskattad pantvärd</span>
+        <span id="summary-value">0 kr</span>
+      </div>
+      <a href="/kassa" class="btn-primary btn-large" style="display:block;text-align:center;margin-top:1.25rem">
+        Gå till kassan →
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+async function loadCart() {
+  const ids = getCart()
+  const loading = document.getElementById('cart-loading')
+  const empty = document.getElementById('cart-empty')
+  const content = document.getElementById('cart-content')
+
+  if (ids.length === 0) {
+    loading.style.display = 'none'
+    empty.style.display = 'block'
+    return
+  }
+
+  const res = await fetch('/api/listings?ids=' + ids.join(','))
+  const listings = await res.json()
+  loading.style.display = 'none'
+
+  if (listings.length === 0) {
+    empty.style.display = 'block'
+    return
+  }
+
+  content.style.display = 'block'
+  const container = document.getElementById('cart-items')
+  let totalVarde = 0
+
+  listings.forEach(l => {
+    totalVarde += l.pantVarde
+    container.innerHTML += `
+      <div class="cart-item" id="item-${l.id}">
+        <div class="cart-item-img">
+          ${l.image
+            ? `<img src="${l.image}" alt="burkar">`
+            : '<div class="cart-img-placeholder">🥫</div>'}
+        </div>
+        <div class="cart-item-info">
+          <h3>~${l.antal} burkar i ${l.location}</h3>
+          <p class="meta">${l.typ} · ~${l.pantVarde} kr pantvärd</p>
+          ${l.reserved ? '<span class="reserved-tag">Redan reserverad</span>' : ''}
+        </div>
+        <button class="cart-remove" onclick="removeFromCart('${l.id}'); document.getElementById('item-${l.id}').remove(); location.reload()">
+          ✕
+        </button>
+      </div>
+    `
+  })
+
+  document.getElementById('summary-count').textContent = listings.length
+  document.getElementById('summary-value').textContent = '~' + totalVarde + ' kr'
+}
+
+loadCart()
+</script>
+
+<%- include('partials/footer') %>

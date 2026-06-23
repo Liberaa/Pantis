@@ -13,7 +13,11 @@
     </div>
 
     <div class="listing-info">
-      <div class="free-banner">Gratis att hämta – du behåller panten!</div>
+      <% if (listing.reserved) { %>
+        <div class="reserved-banner">Dessa burkar är redan reserverade</div>
+      <% } else { %>
+        <div class="free-banner">Gratis att hämta – du behåller panten!</div>
+      <% } %>
 
       <h1>~<%= listing.antal %> burkar i <%= listing.location %></h1>
 
@@ -32,7 +36,20 @@
         <p class="description"><%= listing.description %></p>
       <% } %>
 
-      <div class="contact-box">
+      <% if (!listing.reserved) { %>
+        <button
+          class="btn-primary btn-large btn-add-cart"
+          id="cart-btn"
+          onclick="toggleCart('<%= listing.id %>', this)"
+        >
+          Lägg i hämtlista
+        </button>
+        <a href="/varukorg" class="btn-outline btn-large" style="margin-top:0.75rem;display:block;text-align:center">
+          Visa hämtlista
+        </a>
+      <% } %>
+
+      <div class="contact-box" style="margin-top:1.5rem">
         <h3>Kontakta för upphämtning</h3>
         <p><%= listing.contact %></p>
       </div>
@@ -41,5 +58,9 @@
     </div>
   </div>
 </section>
+
+<script>
+  updateCartBtn('<%= listing.id %>', document.getElementById('cart-btn'))
+</script>
 
 <%- include('partials/footer') %>

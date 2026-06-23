@@ -1,0 +1,40 @@
+<%- include('partials/header', { title: 'Bekräftelse' }) %>
+
+<section class="section">
+  <div class="confirmation-box">
+    <div class="confirm-icon">✅</div>
+    <h1>Bokat! Nu är det bara att hämta.</h1>
+    <p>Hej <strong><%= order.name %></strong>! Kontakta säljarna nedan för att stämma av upphämtning.</p>
+
+    <div class="confirm-listings">
+      <% order.listings.forEach(listing => { %>
+      <div class="confirm-item">
+        <div class="confirm-item-left">
+          <% if (listing.image) { %>
+            <img src="<%= listing.image %>" alt="burkar">
+          <% } else { %>
+            <div class="cart-img-placeholder">🥫</div>
+          <% } %>
+        </div>
+        <div class="confirm-item-info">
+          <strong>~<%= listing.antal %> burkar i <%= listing.location %></strong>
+          <p class="meta"><%= listing.typ %> · ~<%= listing.pantVarde %> kr</p>
+          <div class="contact-pill">📞 <%= listing.contact %></div>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+
+    <div class="confirm-total">
+      Totalt uppskattad pantvärd: <strong>~<%= order.listings.reduce((s, l) => s + l.pantVarde, 0) %> kr</strong>
+    </div>
+
+    <a href="/annonser" class="btn-outline" onclick="clearCart()">Hitta fler burkar</a>
+  </div>
+</section>
+
+<script>
+  clearCart()
+</script>
+
+<%- include('partials/footer') %>

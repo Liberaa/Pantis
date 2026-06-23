@@ -12,6 +12,7 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, 'public/uploads'),
@@ -21,14 +22,16 @@ const upload = multer({ storage })
 
 // In-memory store
 const listings = []
+const orders = []
 
 app.get('/', (req, res) => {
-  res.render('index', { listings: listings.slice(-9).reverse() })
+  const available = listings.filter(l => !l.reserved)
+  res.render('index', { listings: available.slice(-9).reverse() })
 })
 
 app.get('/annonser', (req, res) => {
   const { search, typ } = req.query
-  let results = [...listings]
+  let results = listings.filter(l => !l.reserved)
 
   if (search) results = results.filter(l =>
     l.description.toLowerCase().includes(search.toLowerCase()) ||
@@ -62,10 +65,44 @@ app.post('/lämna', upload.single('image'), (req, res) => {
     location,
     contact,
     image: req.file ? `/uploads/${req.file.filename}` : null,
+    reserved: false,
     createdAt: new Date()
   }
   listings.push(listing)
   res.redirect(`/annons/${listing.id}`)
+})
+
+// API — returns listings by comma-separated IDs
+app.get('/api/listings', (req, res) => {
+  const ids = req.query.ids ? req.query.ids.split(',') : []
+  const found = ids.map(id => listings.find(l => l.id === id)).filter(Boolean)
+  res.json(found)
+})
+
+app.get('/varukorg', (req, res) => {
+  res.render('cart')
+})
+
+app.get('/kassa', (req, res) => {
+  res.render('checkout')
+})
+
+app.post('/kassa', (req, res) => {
+  const { name, contact, ids } = req.body
+  const idList = Array.isArray(ids) ? ids : [ids].filter(Boolean)
+  const picked = idList.map(id => listings.find(l => l.id === id)).filter(Boolean)
+
+  picked.forEach(l => { l.reserved = true })
+
+  const order = {
+    id: uuidv4(),
+    name,
+    contact,
+    listings: picked,
+    createdAt: new Date()
+  }
+  orders.push(order)
+  res.render('confirmation', { order })
 })
 
 app.get('/hur-fungerar-det', (req, res) => {

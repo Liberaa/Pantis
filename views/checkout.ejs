@@ -1,0 +1,93 @@
+<%- include('partials/header', { title: 'Kassa' }) %>
+
+<section class="section">
+  <h1>Bekräfta upphämtning</h1>
+  <p class="form-subtitle">Fyll i dina uppgifter så att säljarna vet vem som kommer.</p>
+
+  <div id="checkout-empty" style="display:none">
+    <div class="empty-state">
+      <p>Din hämtlista är tom.</p>
+      <a href="/annonser" class="btn-primary">Hitta burkar</a>
+    </div>
+  </div>
+
+  <div id="checkout-content" style="display:none">
+    <div class="checkout-layout">
+
+      <form class="listing-form" id="checkout-form" action="/kassa" method="POST">
+        <div id="hidden-ids"></div>
+
+        <h2 style="font-size:1.2rem">Dina uppgifter</h2>
+
+        <div class="form-group">
+          <label for="name">Ditt namn *</label>
+          <input type="text" id="name" name="name" placeholder="Anna Svensson" required>
+        </div>
+        <div class="form-group">
+          <label for="contact">Telefon eller e-post *</label>
+          <input type="text" id="contact" name="contact" placeholder="070-000 00 00" required>
+        </div>
+
+        <p class="form-terms">Genom att bekräfta godkänner du våra <a href="/villkor" target="_blank">användarvillkor</a>.</p>
+        <button type="submit" class="btn-primary btn-large">Bekräfta upphämtning</button>
+      </form>
+
+      <div class="checkout-summary">
+        <h2 style="font-size:1.2rem;margin-bottom:1rem">Din hämtlista</h2>
+        <div id="checkout-items"></div>
+        <div class="summary-row summary-total" style="margin-top:1rem">
+          <span>Uppskattad pantvärd</span>
+          <span id="checkout-total">0 kr</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+async function loadCheckout() {
+  const ids = getCart()
+  if (ids.length === 0) {
+    document.getElementById('checkout-empty').style.display = 'block'
+    return
+  }
+
+  const res = await fetch('/api/listings?ids=' + ids.join(','))
+  const listings = await res.json()
+
+  if (listings.length === 0) {
+    document.getElementById('checkout-empty').style.display = 'block'
+    return
+  }
+
+  document.getElementById('checkout-content').style.display = 'block'
+
+  const hiddenIds = document.getElementById('hidden-ids')
+  listings.forEach(l => {
+    hiddenIds.innerHTML += `<input type="hidden" name="ids" value="${l.id}">`
+  })
+
+  const container = document.getElementById('checkout-items')
+  let total = 0
+  listings.forEach(l => {
+    total += l.pantVarde
+    container.innerHTML += `
+      <div class="cart-item">
+        <div class="cart-item-img">
+          ${l.image ? `<img src="${l.image}" alt="">` : '<div class="cart-img-placeholder">🥫</div>'}
+        </div>
+        <div class="cart-item-info">
+          <h3>~${l.antal} burkar i ${l.location}</h3>
+          <p class="meta">${l.typ} · ~${l.pantVarde} kr</p>
+        </div>
+      </div>
+    `
+  })
+  document.getElementById('checkout-total').textContent = '~' + total + ' kr'
+}
+
+loadCheckout()
+</script>
+
+<%- include('partials/footer') %>
