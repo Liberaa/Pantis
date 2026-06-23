@@ -1,17 +1,37 @@
-<%- include('partials/header', { title: 'Hem' }) %>
+<%- include('partials/header', { title: 'Flöde' }) %>
 
-<section class="hero">
-  <h1>Gratis pantburkar nära dig</h1>
-  <p>Någon ställer ut sina burkar. Du hämtar dem och behåller panten.</p>
-  <div class="hero-actions">
-    <a href="/annonser" class="btn-primary">Hitta burkar</a>
-    <a href="/lämna" class="btn-secondary">Lämna dina burkar</a>
+<div class="feed-header">
+  <form class="filter-form" method="GET" action="/">
+    <input type="text" name="search" placeholder="Sök ort..." value="<%= search %>">
+    <select name="typ">
+      <option value="">Alla typer</option>
+      <option value="1kr" <%= typ === '1kr' ? 'selected' : '' %>>1 kr</option>
+      <option value="2kr" <%= typ === '2kr' ? 'selected' : '' %>>2 kr</option>
+      <option value="3kr" <%= typ === '3kr' ? 'selected' : '' %>>3 kr</option>
+      <option value="blandat" <%= typ === 'blandat' ? 'selected' : '' %>>Blandat</option>
+    </select>
+    <button type="submit" class="btn-filter">Filtrera</button>
+    <% if (search || typ) { %>
+      <a href="/" class="btn-clear">Rensa</a>
+    <% } %>
+  </form>
+</div>
+
+<% if (listings.length === 0) { %>
+  <div class="section">
+    <div class="empty-state">
+      <p>Inga burkar tillgängliga just nu.</p>
+      <% if (currentUser) { %>
+        <a href="/lämna" class="btn-primary">Lämna dina burkar</a>
+      <% } else { %>
+        <a href="/registrera" class="btn-primary">Kom igång</a>
+      <% } %>
+    </div>
   </div>
-</section>
-
-<% if (listings.length > 0) { %>
-<section class="section">
-  <h2>Senast utlagda</h2>
+<% } else { %>
+  <% if (search || typ) { %>
+    <p class="feed-count"><%= listings.length %> annons<%= listings.length !== 1 ? 'er' : '' %></p>
+  <% } %>
   <div class="insta-grid">
     <% listings.forEach(listing => { %>
     <a href="/annons/<%= listing.id %>" class="insta-card">
@@ -30,15 +50,6 @@
     </a>
     <% }) %>
   </div>
-  <div class="center" style="margin-top:2rem"><a href="/annonser" class="btn-outline">Visa alla annonser</a></div>
-</section>
-<% } else { %>
-<section class="section">
-  <div class="empty-state">
-    <p>Inga burkar utlagda ännu.</p>
-    <a href="/lämna" class="btn-primary">Bli den första</a>
-  </div>
-</section>
 <% } %>
 
 <%- include('partials/footer') %>

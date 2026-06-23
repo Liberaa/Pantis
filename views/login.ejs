@@ -1,0 +1,31 @@
+<%- include('partials/header', { title: 'Logga in' }) %>
+
+<div class="auth-page">
+  <div class="auth-box">
+    <a href="/" class="logo auth-logo">Pantis</a>
+    <h1>Logga in</h1>
+
+    <% if (error) { %>
+      <div class="auth-error"><%= error %></div>
+    <% } %>
+
+    <form action="/loggain" method="POST">
+      <input type="hidden" name="next" value="<%= next %>">
+
+      <div class="form-group">
+        <label for="email">E-post</label>
+        <input type="email" id="email" name="email" placeholder="din@email.se" required autofocus>
+      </div>
+      <div class="form-group">
+        <label for="password">Lösenord</label>
+        <input type="password" id="password" name="password" placeholder="••••••••" required>
+      </div>
+
+      <button type="submit" class="btn-primary btn-large">Logga in</button>
+    </form>
+
+    <p class="auth-switch">Inget konto? <a href="/registrera">Registrera dig</a></p>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
