@@ -61,7 +61,16 @@ app.post('/annons/:id/slett', requireAuth, (req, res) => {
   if (!listing) return res.redirect('/')
   if (listing.userId !== req.session.user.id) return res.redirect('/')
   db.deleteListing(listing.id)
-  res.redirect('/')
+  res.redirect('/profil')
+})
+
+// ─── Mark as hämtad ───────────────────────────────
+app.post('/annons/:id/hamtad', requireAuth, (req, res) => {
+  const listing = db.getListing(req.params.id)
+  if (!listing) return res.redirect('/')
+  if (listing.userId !== req.session.user.id) return res.redirect('/')
+  db.reserveListing(listing.id)
+  res.redirect('/profil')
 })
 
 // ─── Post listing ─────────────────────────────────

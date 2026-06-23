@@ -1,41 +1,76 @@
 <%- include('partials/header', { title: 'Min profil' }) %>
 
 <section class="section">
-  <h1>Välkommen, <%= currentUser.name %></h1>
-
-  <h2 style="margin-top:2rem">Dina annonser</h2>
-
-  <% if (listings.length === 0) { %>
-    <div class="empty-state">
-      <p>Du har inga aktiva annonser.</p>
-      <a href="/lämna" class="btn-primary">Lämna burkar</a>
+  <div class="profile-header">
+    <div>
+      <h1><%= currentUser.name %></h1>
+      <p class="meta"><%= currentUser.email %></p>
     </div>
-  <% } else { %>
+    <a href="/lämna" class="btn-primary">Lämna burkar</a>
+  </div>
+
+  <%
+    const active   = listings.filter(l => !l.reserved)
+    const done     = listings.filter(l => l.reserved)
+  %>
+
+  <div class="profile-section">
+    <h2>Aktiva annonser <span class="count-badge"><%= active.length %></span></h2>
+    <% if (active.length === 0) { %>
+      <p class="profile-empty">Inga aktiva annonser.</p>
+    <% } else { %>
+      <div class="profile-listings">
+        <% active.forEach(listing => { %>
+        <div class="profile-listing-row">
+          <a href="/annons/<%= listing.id %>" class="cart-item-img">
+            <% if (listing.image) { %>
+              <img src="<%= listing.image %>" alt="burkar">
+            <% } else { %>
+              <%- include('partials/can-placeholder') %>
+            <% } %>
+          </a>
+          <div class="cart-item-info">
+            <a href="/annons/<%= listing.id %>"><strong>~<%= listing.antal %> burkar i <%= listing.location %></strong></a>
+            <p class="meta"><%= listing.typ %> &middot; ~<%= listing.pantVarde %> kr &middot; <%= listing.createdAt.toLocaleDateString('sv-SE') %></p>
+          </div>
+          <div class="profile-row-actions">
+            <form action="/annons/<%= listing.id %>/hamtad" method="POST">
+              <button type="submit" class="btn-done">Hämtad</button>
+            </form>
+            <form action="/annons/<%= listing.id %>/slett" method="POST" onsubmit="return confirm('Ta bort?')">
+              <button type="submit" class="btn-delete">Ta bort</button>
+            </form>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+
+  <% if (done.length > 0) { %>
+  <div class="profile-section">
+    <h2>Hämtade <span class="count-badge count-badge-dim"><%= done.length %></span></h2>
     <div class="profile-listings">
-      <% listings.forEach(listing => { %>
-      <div class="profile-listing-row">
+      <% done.forEach(listing => { %>
+      <div class="profile-listing-row profile-listing-done">
         <div class="cart-item-img">
           <% if (listing.image) { %>
             <img src="<%= listing.image %>" alt="burkar">
           <% } else { %>
-            <div class="cart-img-placeholder">
-              <%- include('partials/can-placeholder') %>
-            </div>
+            <%- include('partials/can-placeholder') %>
           <% } %>
         </div>
         <div class="cart-item-info">
-          <a href="/annons/<%= listing.id %>"><strong>~<%= listing.antal %> burkar i <%= listing.location %></strong></a>
-          <p class="meta"><%= listing.typ %> · ~<%= listing.pantVarde %> kr · <%= listing.createdAt.toLocaleDateString('sv-SE') %></p>
-          <% if (listing.reserved) { %>
-            <span class="reserved-tag">Reserverad</span>
-          <% } %>
+          <strong>~<%= listing.antal %> burkar i <%= listing.location %></strong>
+          <p class="meta"><%= listing.typ %> &middot; ~<%= listing.pantVarde %> kr &middot; <%= listing.createdAt.toLocaleDateString('sv-SE') %></p>
         </div>
-        <form action="/annons/<%= listing.id %>/slett" method="POST" onsubmit="return confirm('Ta bort annonsen?')">
+        <form action="/annons/<%= listing.id %>/slett" method="POST" onsubmit="return confirm('Ta bort?')">
           <button type="submit" class="btn-delete">Ta bort</button>
         </form>
       </div>
       <% }) %>
     </div>
+  </div>
   <% } %>
 </section>
 

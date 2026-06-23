@@ -10,10 +10,11 @@
 <header>
   <div class="header-inner">
     <a href="/" class="logo">Pantis</a>
-    <nav>
+
+    <nav id="main-nav">
       <a href="/hur-fungerar-det" class="nav-link">Hur funkar det?</a>
       <a href="/varukorg" class="cart-link" aria-label="Hämtlista">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/>
           <path d="M2.05 2.05h2l2.66 12.42a2 2 0 002 1.58h9.78a2 2 0 001.95-1.57l1.65-7.43H5.12"/>
         </svg>
@@ -22,18 +23,28 @@
 
       <% if (currentUser) { %>
         <a href="/lämna" class="btn-sell">Lämna burkar</a>
-        <div class="user-menu">
-          <a href="/profil" class="user-name"><%= currentUser.name %></a>
-          <form action="/logout" method="POST" style="display:inline">
-            <button type="submit" class="btn-logout">Logga ut</button>
-          </form>
-        </div>
+        <a href="/profil" class="user-name"><%= currentUser.name %></a>
+        <form action="/logout" method="POST" style="display:inline">
+          <button type="submit" class="btn-logout">Logga ut</button>
+        </form>
       <% } else { %>
         <a href="/loggain" class="btn-login">Logga in</a>
         <a href="/registrera" class="btn-sell">Registrera</a>
       <% } %>
     </nav>
+
+    <button class="hamburger" id="hamburger" aria-label="Meny" onclick="toggleNav()">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
 <main>
 <script src="/cart.js"></script>
+<script>
+function toggleNav() {
+  const nav = document.getElementById('main-nav')
+  const btn = document.getElementById('hamburger')
+  nav.classList.toggle('open')
+  btn.classList.toggle('open')
+}
+</script>

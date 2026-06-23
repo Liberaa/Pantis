@@ -6,7 +6,7 @@
   <div id="cart-empty" style="display:none">
     <div class="empty-state">
       <p>Din hämtlista är tom.</p>
-      <a href="/annonser" class="btn-primary">Hitta burkar</a>
+      <a href="/" class="btn-primary">Hitta burkar</a>
     </div>
   </div>
 
@@ -65,7 +65,7 @@ async function loadCart() {
     item.id = 'item-' + l.id
     item.innerHTML = `
       <div class="cart-item-img">
-        ${l.image ? `<img src="${l.image}" alt="">` : '<div class="cart-img-placeholder"><svg viewBox="0 0 48 72" fill="none"><ellipse cx="24" cy="11" rx="16" ry="5" fill="#bfdbfe" stroke="#93c5fd" stroke-width="1.5"/><rect x="8" y="11" width="32" height="50" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/><ellipse cx="24" cy="61" rx="16" ry="5" fill="#bfdbfe" stroke="#93c5fd" stroke-width="1.5"/></svg></div>'}
+        ${l.image ? `<img src="${l.image}" alt="">` : '<div class="cart-img-placeholder"><svg viewBox="0 0 48 72" fill="none"><rect x="15" y="2" width="18" height="9" rx="3" fill="#2e2e2e"/><ellipse cx="24" cy="11" rx="16" ry="5" fill="#252525" stroke="#333" stroke-width="1.5"/><rect x="8" y="11" width="32" height="50" fill="#1e1e1e" stroke="#333" stroke-width="1.5"/><ellipse cx="24" cy="61" rx="16" ry="5" fill="#252525" stroke="#333" stroke-width="1.5"/></svg></div>'}
       </div>
       <div class="cart-item-info">
         <h3>~${l.antal} burkar i ${l.location}</h3>

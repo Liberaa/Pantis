@@ -1,7 +1,7 @@
 <%- include('partials/header', { title: listing.antal + ' burkar i ' + listing.location }) %>
 
 <section class="section listing-detail">
-  <a href="/annonser" class="back-link">
+  <a href="/" class="back-link">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
     Tillbaka
   </a>
@@ -19,7 +19,7 @@
 
     <div class="listing-info">
       <% if (listing.reserved) { %>
-        <div class="reserved-banner">Dessa burkar är redan reserverade</div>
+        <div class="reserved-banner">Dessa burkar är redan hämtade</div>
       <% } else { %>
         <div class="free-banner">Gratis att hämta — du behåller panten</div>
       <% } %>
@@ -41,33 +41,32 @@
         <p class="description"><%= listing.description %></p>
       <% } %>
 
-      <% if (!listing.reserved) { %>
+      <% if (currentUser && currentUser.id === listing.userId) { %>
+        <div class="owner-actions">
+          <% if (!listing.reserved) { %>
+            <form action="/annons/<%= listing.id %>/hamtad" method="POST">
+              <button type="submit" class="btn-primary btn-large">Burkarna är hämtade</button>
+            </form>
+          <% } %>
+          <form action="/annons/<%= listing.id %>/slett" method="POST" onsubmit="return confirm('Ta bort annonsen permanent?')">
+            <button type="submit" class="btn-delete btn-large">Ta bort annons</button>
+          </form>
+        </div>
+      <% } else if (!listing.reserved) { %>
         <div class="cart-actions">
-          <button
-            class="btn-primary btn-large btn-add-cart"
-            id="cart-btn"
-            onclick="toggleCart('<%= listing.id %>', this)"
-          >
+          <button class="btn-primary btn-large btn-add-cart" id="cart-btn" onclick="toggleCart('<%= listing.id %>', this)">
             Lägg i hämtlista
           </button>
-          <a href="/varukorg" class="btn-outline btn-large">
-            Se hämtlista
-          </a>
+          <a href="/varukorg" class="btn-outline btn-large">Se hämtlista</a>
         </div>
       <% } %>
 
       <div class="contact-box">
-        <h3>Kontakta för upphämtning</h3>
+        <h3>Kontakt</h3>
         <p><%= listing.contact %></p>
       </div>
 
-      <p class="date">Publicerad: <%= listing.createdAt.toLocaleDateString('sv-SE') %></p>
-
-      <% if (currentUser && currentUser.id === listing.userId) { %>
-        <form action="/annons/<%= listing.id %>/slett" method="POST" style="margin-top:1rem" onsubmit="return confirm('Ta bort annonsen?')">
-          <button type="submit" class="btn-delete btn-large">Ta bort annons</button>
-        </form>
-      <% } %>
+      <p class="date">Publicerad <%= listing.createdAt.toLocaleDateString('sv-SE') %> av <%= listing.userName || 'Okänd' %></p>
     </div>
   </div>
 </section>
